@@ -634,6 +634,10 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 		}
 		
 		len = buf - phon_buf;
+		if (plist->sourceix) {
+			sprintf(buf, "(%u)", plist->sourceix & 0x7ff);
+			len += strlen(buf);
+		}
 		if ((phon_out_ix + len) >= phon_out_size) {
 			// enlarge the phoneme buffer
 			phon_out_size = phon_out_ix + len + N_PHON_OUT;
