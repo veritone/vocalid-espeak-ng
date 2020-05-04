@@ -557,6 +557,9 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 	PHONEME_LIST *plist;
 
 	static const char *stress_chars = "==,,''";
+   //mtoman (vocalid) continue ix over clauses
+   //TODO: reset on new call
+   static unsigned int last_sourceix = 0;
 
 	if (phon_out_buf == NULL) {
 		phon_out_size = N_PHON_OUT;
@@ -635,7 +638,8 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 		
 		len = buf - phon_buf;
 		if (plist->sourceix) {
-			sprintf(buf, "(%u)", plist->sourceix & 0x7ff);
+			sprintf(buf, "(%u)", 
+               (plist->sourceix & 0x7ff) + last_sourceix);
 			len += strlen(buf);
 		}
 		if ((phon_out_ix + len) >= phon_out_size) {
@@ -659,6 +663,8 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 
 	phon_out_buf[phon_out_ix] = 0;
 
+	plist = &phoneme_list[ix];
+   last_sourceix += plist->sourceix;
 	return phon_out_buf;
 }
 
