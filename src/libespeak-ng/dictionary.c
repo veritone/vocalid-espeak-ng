@@ -639,7 +639,7 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 		len = buf - phon_buf;
 		if (plist->sourceix) {
 			sprintf(buf, "(%u)", 
-               (plist->sourceix & 0x7ff) + last_sourceix);
+               (plist->sourceix & 0x7ff) + last_sourceix - 1);
 			len += strlen(buf);
 		}
 		if ((phon_out_ix + len) >= phon_out_size) {
