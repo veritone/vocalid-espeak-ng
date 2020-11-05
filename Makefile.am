@@ -79,10 +79,10 @@ SUFFIXES=.html .md .ronn .check .test
 .md.html: _layouts/webpage.html
 	@echo "  MD        $@"
 	@cat $< | sed -e 's/\.md)/.html)/g' -e 's/\.ronn/.html/g' | \
-		kramdown --template _layouts/webpage.html > $@
+		$(KRAMDOWN) --template _layouts/webpage.html > $@
 
 .ronn.html:
-	ronn --html $<
+	$(RONN) --html $<
 
 ##### vim:
 
@@ -101,10 +101,10 @@ EXTRA_DIST += $(vim_addons_syntax_DATA)
 ##### documentation:
 
 src/espeak-ng.1: src/espeak-ng.1.ronn
-	ronn --roff $<
+	$(RONN) --roff $<
 
 src/speak-ng.1: src/speak-ng.1.ronn
-	ronn --roff $<
+	$(RONN) --roff $<
 
 docs_MARKDOWN != ls docs/*.md docs/*/*.md docs/*/*/*.md
 docs_HTML = ${docs_MARKDOWN:.md=.html}
@@ -257,6 +257,8 @@ check:	tests/encoding.check \
 	tests/language-numbers-cardinal.check \
 	tests/language-numbers-ordinal.check \
 	tests/non-executable-files-with-executable-bit.check \
+	tests/klatt.check \
+	tests/mbrola.check \
 	tests/bom.check
 
 ##### fuzzer:
@@ -309,6 +311,7 @@ phsource/phonemes.stamp: \
 	phsource/ph_bengali \
 	phsource/ph_bulgarian \
 	phsource/ph_catalan \
+	phsource/ph_cherokee \
 	phsource/ph_consonants \
 	phsource/ph_croatian \
 	phsource/ph_czech \
@@ -392,7 +395,10 @@ phsource/phonemes.stamp: \
 	phsource/ph_telugu \
 	phsource/ph_tibetan \
 	phsource/ph_turkish \
+	phsource/ph_turkmen \
 	phsource/ph_urdu \
+	phsource/ph_uyghur \
+	phsource/ph_uzbek \
 	phsource/ph_vietnam \
 	phsource/ph_vietnam_hue \
 	phsource/ph_vietnam_sgn \
@@ -470,7 +476,9 @@ dictionaries: \
 	espeak-ng-data/bpy_dict \
 	espeak-ng-data/bs_dict \
 	espeak-ng-data/ca_dict \
+	espeak-ng-data/chr_dict \
 	espeak-ng-data/cs_dict \
+	espeak-ng-data/cv_dict \
 	espeak-ng-data/cy_dict \
 	espeak-ng-data/da_dict \
 	espeak-ng-data/de_dict \
@@ -498,6 +506,7 @@ dictionaries: \
 	espeak-ng-data/hy_dict \
 	espeak-ng-data/ia_dict \
 	espeak-ng-data/id_dict \
+	espeak-ng-data/io_dict \
 	espeak-ng-data/is_dict \
 	espeak-ng-data/it_dict \
 	espeak-ng-data/ja_dict \
@@ -525,6 +534,7 @@ dictionaries: \
 	espeak-ng-data/ne_dict \
 	espeak-ng-data/nl_dict \
 	espeak-ng-data/no_dict \
+	espeak-ng-data/nog_dict \
 	espeak-ng-data/om_dict \
 	espeak-ng-data/or_dict \
 	espeak-ng-data/pa_dict \
@@ -547,10 +557,13 @@ dictionaries: \
 	espeak-ng-data/sw_dict \
 	espeak-ng-data/ta_dict \
 	espeak-ng-data/te_dict \
+	espeak-ng-data/th_dict \
+	espeak-ng-data/tk_dict \
 	espeak-ng-data/tn_dict \
 	espeak-ng-data/tr_dict \
 	espeak-ng-data/tt_dict \
 	espeak-ng-data/uk_dict \
+	espeak-ng-data/ug_dict \
 	espeak-ng-data/ur_dict \
 	espeak-ng-data/uz_dict \
 	espeak-ng-data/vi_dict \
@@ -593,8 +606,14 @@ espeak-ng-data/bs_dict: dictsource/bs_list dictsource/bs_rules dictsource/bs_ext
 ca: espeak-ng-data/ca_dict
 espeak-ng-data/ca_dict: dictsource/ca_list dictsource/ca_rules dictsource/ca_extra dictsource/ca_emoji
 
+chr: espeak-ng-data/chr_dict
+espeak-ng-data/chr_dict: dictsource/chr_list dictsource/chr_rules
+
 cs: espeak-ng-data/cs_dict
 espeak-ng-data/cs_dict: dictsource/cs_list dictsource/cs_rules dictsource/cs_extra dictsource/cs_emoji
+
+cv: espeak-ng-data/cv_dict
+espeak-ng-data/cv_dict: dictsource/cv_list dictsource/cv_rules dictsource/cv_extra
 
 cy: espeak-ng-data/cy_dict
 espeak-ng-data/cy_dict: dictsource/cy_list dictsource/cy_rules dictsource/cy_extra dictsource/cy_emoji
@@ -672,10 +691,13 @@ hy: espeak-ng-data/hy_dict
 espeak-ng-data/hy_dict: dictsource/hy_list dictsource/hy_rules dictsource/hy_extra dictsource/hy_emoji
 
 ia: espeak-ng-data/ia_dict
-espeak-ng-data/ia_dict: dictsource/ia_list dictsource/ia_rules dictsource/ia_extra
+espeak-ng-data/ia_dict: dictsource/ia_list dictsource/ia_listx dictsource/ia_rules dictsource/ia_extra
 
 id: espeak-ng-data/id_dict
 espeak-ng-data/id_dict: dictsource/id_list dictsource/id_rules dictsource/id_extra dictsource/id_emoji
+
+io: espeak-ng-data/io_dict
+espeak-ng-data/io_dict: dictsource/io_list dictsource/io_rules dictsource/io_extra
 
 is: espeak-ng-data/is_dict
 espeak-ng-data/is_dict: dictsource/is_list dictsource/is_rules dictsource/is_extra dictsource/is_emoji
@@ -758,6 +780,9 @@ espeak-ng-data/nl_dict: dictsource/nl_list dictsource/nl_rules dictsource/nl_ext
 no: espeak-ng-data/no_dict
 espeak-ng-data/no_dict: dictsource/no_list dictsource/no_rules dictsource/no_extra
 
+no: espeak-ng-data/nog_dict
+espeak-ng-data/nog_dict: dictsource/nog_list dictsource/nog_rules dictsource/nog_extra
+
 om: espeak-ng-data/om_dict
 espeak-ng-data/om_dict: dictsource/om_list dictsource/om_rules dictsource/om_extra
 
@@ -838,6 +863,12 @@ espeak-ng-data/ta_dict: dictsource/ta_list dictsource/ta_rules dictsource/ta_ext
 te: espeak-ng-data/te_dict
 espeak-ng-data/te_dict: dictsource/te_list dictsource/te_rules dictsource/te_extra dictsource/te_emoji
 
+th: espeak-ng-data/th
+espeak-ng-data/th: dictsource/th dictsource/th dictsource/te_extra
+
+tk: espeak-ng-data/tk_dict
+espeak-ng-data/tk_dict: dictsource/tk_list dictsource/tk_listx dictsource/tk_rules dictsource/tk_extra
+
 tn: espeak-ng-data/tn_dict
 espeak-ng-data/tn_dict: dictsource/tn_list dictsource/tn_rules dictsource/tn_extra
 
@@ -846,6 +877,9 @@ espeak-ng-data/tr_dict: dictsource/tr_list dictsource/tr_rules dictsource/tr_ext
 
 tt: espeak-ng-data/tt_dict
 espeak-ng-data/tt_dict: dictsource/tt_list dictsource/tt_rules dictsource/tt_extra
+
+ug: espeak-ng-data/ug_dict
+espeak-ng-data/ug_dict: dictsource/ug_list dictsource/ug_rules dictsource/ug_extra
 
 uk: espeak-ng-data/uk_dict
 espeak-ng-data/uk_dict: dictsource/uk_list dictsource/uk_rules dictsource/uk_extra
@@ -863,7 +897,7 @@ zh: espeak-ng-data/zh_dict
 dictsource/zh_listx:
 	ln -svf extra/zh_listx dictsource/
 if HAVE_ZH_EXTENDED_DICTIONARY
-espeak-ng-data/zh_dict: dictsource/zh_list dictsource/zh_rules dictsource/zh_extra dictsource/zh_listx dictsource/zh_emoji
+espeak-ng-data/zh_dict: dictsource/zh_list dictsource/zh_rules dictsource/zh_listx dictsource/zh_extra dictsource/zh_emoji
 else
 espeak-ng-data/zh_dict: dictsource/zh_list dictsource/zh_rules dictsource/zh_extra dictsource/zh_emoji
 endif

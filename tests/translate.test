@@ -20,7 +20,7 @@ test_phonemes en "s'VmTIN Imp'o@t@nt" "something important"
 
 # suffix rules
 test_phonemes lv \
-	"nev'ie:na nuo\`_ 'eiRo:pas v'al>sti:m nek,ad nav p'a:Rga:jusi nuo\`_ 'univERsa:la:s_:_: nuo\` v'ispa:Re:jiem n'uoduok}l^iem f'inanse:tas_:_: s'iste:mas uz 'obliga:ta:s 'apdRuoSina:Sanas s'iste:mu b'eigas" \
+	"nev'ie:na nuo\`_ 'eiRo:pas v'alsti:m nek,ad nav p'a:Rga:jusi nuo\`_ 'univERsa:la:s_:_: nuo\` v'ispa:Re:jiem n'uoduok_|l^iem f'inanse:tas_:_: s'iste:mas uz 'obliga:ta:s 'apdRuoSina:Sanas s'iste:mu b'eigas" \
 	"Neviena no Eiropas valstīm nekad nav pārgājusi no universālās (no vispārējiem nodokļiem finansētas) sistēmas uz obligātās apdrošināšanas sistēmu Beigas."
 
 # A list entry that uses '$text' to map to another list entry crashes 1.49.2 multi-word support:
@@ -30,8 +30,8 @@ test_phonemes en-US "d'eIbju:t#I#d" "débuted"
 # s at the end of abbreviations
 # https://github.com/espeak-ng/espeak-ng/issues/706
 test_phonemes en ",aIb,i:;'Em m'It 'Ib@mz m'Its ,aIb,i:;'Em ,Em,aIt'i:; ,eIp,i:;'eItS s,i:;,i:;'Es ,aIt,i:;'Eks ,aIb,i:;'Emz ,Em,aIt'i:z ,eIp,i:;'eItSIz s,i:;,i:;'EsIz ,aIt,i:;'EksIz" "ibm mit ibms mits IBM MIT APH CES ITX IBMs MIT's APHs CES's ITXs"
-test_phonemes lv "'ibm m'it 'ibm-s m'its 'ibm m'it 'aph ts'Es 'it_ks 'ibm-s m'its 'aphs ts'Ess 'it_kss" "ibm mit ibms mits IBM MIT APH CES ITX IBMs MIT's APHs CES's ITXs"
-test_phonemes ru "(en),aIb,i:;'Em m'It 'Ib@mz m'Its ,aIb,i:;'Em ,Em,aIt'i:; ,eIp,i:;'eItS s,i:;,i:;'Es ,aIt,i:;'Eks 'Ib@mz m'Its 'afz s'EI2zI2z 'ItEksz(ru)" "ibm mit ibms mits IBM MIT APH CES ITX IBMs MIT's APHs CES's ITXs"
+test_phonemes lv "'ibm m'it 'ibm-s m'its 'ibm m'it 'aph ts'Es 'it_ks 'ibm-s m'its 'aphs ts'Ess 'it_kss 'a>_:,ess_! ,a:_:,ess_!v'e:_:_:_: s'i:a:_ 'u>_:t,e:_:t,e:_:" "ibm mit ibms mits IBM MIT APH CES ITX IBMs MIT's APHs CES's ITXs AS ASV SIA utt"
+test_phonemes ru "'Ibm (en),aIb,i:;'Em m'It 'Ib@mz m'Its ,aIb,i:;'Em ,Em,aIt'i:; ,eIp,i:;'eItS s,i:;,i:;'Es ,aIt,i:;'Eks 'Ib@mz m'Its 'afz s'EI2zI2z 'ItEksz(ru) SS'A" "ИБМ ibm mit ibms mits IBM MIT APH CES ITX IBMs MIT's APHs CES's ITXs США"
 
 # bug: https://github.com/nvaccess/nvda/issues/7740
 test_phonemes ta "'il." "ள்"
@@ -54,6 +54,18 @@ b'i: s'i:
 d'i:
 'i:
 'Ef" "A. B C, D. E: F."
+
+# Handling of english acronym + genitive without breaking simple quote
+test_phonemes en "hi: s'Ed
+aI w0z b'O@n InD@ j,u:,Es'eI z_:_: and l'Eft" "He said : I was born in the u.s.a.'s and left."
+
+test_phonemes en "hi: s'Ed
+h@l'oU
+aIa#m b'ak
+and l'Eft" "He said : 'Hello, I am back.' and left."
+
+# Hawaiian okina to apostrophe
+test_phonemes en "h@w'aIi:" "Hawaiʻi"
 
 #----- Emoji [http://www.unicode.org/reports/tr51/tr51-12.html] -----
 

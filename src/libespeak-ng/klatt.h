@@ -24,8 +24,8 @@
 #ifndef ESPEAK_NG_KLATT_H
 #define ESPEAK_NG_KLATT_H
 
-#include "speech.h"
-#include "synthesize.h"
+#include "voice.h"                    // for voice_t
+#include "synthesize.h"              // for frame_t, WGEN_DATA
 
 #ifdef __cplusplus
 extern "C"
@@ -179,8 +179,7 @@ typedef struct {
 
 void KlattInit(void);
 void KlattReset(int control);
-int Wavegen_Klatt2(int length, int resume, frame_t *fr1, frame_t *fr2);
-
+int Wavegen_Klatt(int length, int resume, frame_t *fr1, frame_t *fr2, WGEN_DATA *wdata, voice_t *wvoice);
 
 #ifdef __cplusplus
 }
