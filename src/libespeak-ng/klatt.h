@@ -73,7 +73,7 @@ typedef struct {
 	long T0;        /* Fundamental period in output samples times 4 */
 	long nopen;     /* Number of samples in open phase of period    */
 	long nmod;      /* Position in period to begin noise amp. modul */
-	long nrand;     /* Varible used by random number generator      */
+	long nrand;     /* Variable used by random number generator      */
 	double pulse_shape_a; /* Makes waveshape of glottal pulse when open   */
 	double pulse_shape_b; /* Makes waveshape of glottal pulse when open   */
 	double minus_pi_t;
@@ -92,6 +92,7 @@ typedef struct {
 	short *natural_samples; /* pointer to an array of glottal samples */
 	long original_f0; /* original value of f0 not modified by flutter */
 
+	int fadein;
 	int fadeout;       // set to 64 to cause fadeout over 64 samples
 	int scale_wav;     // depends on the voicing source
 

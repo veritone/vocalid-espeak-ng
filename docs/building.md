@@ -32,6 +32,10 @@ To build eSpeak NG on Windows, you will need:
 4. the [pcaudiolib](https://github.com/espeak-ng/pcaudiolib) project checked out to
    `src` (as `src/pcaudiolib`).
 
+Optionally, you need:
+
+1. sox (http://sox.sourceforge.net/) to enable audio output for SSML <audio> tag
+
 __NOTE:__ SAPI 5 voices are not currently available in this release of eSpeak NG.
 There is an [issue](https://github.com/espeak-ng/espeak-ng/issues/7) to track
 support for this feature.
@@ -66,15 +70,18 @@ In order to build eSpeak NG, you need:
 
 1.  a functional autotools system (`make`, `autoconf`, `automake`, `libtool`
     and `pkg-config`);
-2.  a functional c compiler that supports C99 (e.g. gcc or clang).
+2.  a functional c compiler that supports C99 (e.g. gcc or clang). Note: if building with speechPlayer, a C++ compiler is required.
 
 Optionally, you need:
 
 1.  the [pcaudiolib](https://github.com/espeak-ng/pcaudiolib) development library
     to enable audio output;
+2.  the speechPlayer development library to
+    enable the speechPlayer Klatt implementation;
 3.  the [sonic](https://github.com/espeak-ng/sonic) development library to
     enable sonic audio speed up support;
 4.  the `ronn` man-page markdown processor to build the man pages.
+5. sox (http://sox.sourceforge.net/) to enable audio output for SSML <audio> tag
 
 To build the documentation, you need:
 
@@ -186,6 +193,7 @@ The following `configure` options control which eSpeak NG features are enabled:
 | Option          | Description                                  | Default |
 |-----------------|----------------------------------------------|---------|
 | `--with-klatt`  | Enable Klatt formant synthesis.              | yes     |
+| `--with-speechplayer`  | Enable the speechPlayer Klatt implementation.              | yes     |
 | `--with-mbrola` | Enable MBROLA voice support.                 | yes     |
 | `--with-sonic`  | Use the sonic library to support higher WPM. | yes     |
 | `--with-async`  | Enable asynchronous commands.                | yes     |
@@ -201,8 +209,8 @@ to build:
 | Option               | Extended Dictionary | Default |
 |----------------------|---------------------|---------|
 | `--with-extdict-ru`  | Russian             | no      |
-| `--with-extdict-zh`  | Mandarin Chinese    | no      |
-| `--with-extdict-zhy` | Cantonese           | no      |
+| `--with-extdict-cmn` | Mandarin Chinese    | no      |
+| `--with-extdict-yue` | Cantonese           | no      |
 
 The extended dictionaries are taken from
 [http://espeak.sourceforge.net/data/](http://espeak.sourceforge.net/data/) and

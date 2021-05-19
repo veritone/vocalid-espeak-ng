@@ -616,7 +616,7 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 		for (p = phon_buf2; *p != 0;) {
 			p += utf8_in(&c, p);
 			if (use_tie != 0) {
-				// look for non-inital alphabetic character, but not diacritic, superscript etc.
+				// look for non-initial alphabetic character, but not diacritic, superscript etc.
 				if ((count > 0) && !(flags & (1 << (count-1))) && ((c < 0x2b0) || (c > 0x36f)) && iswalpha(c))
 					buf += utf8_out(use_tie, buf);
 			}
@@ -673,7 +673,7 @@ static int LetterGroupNo(char *rule)
 	 * Returns number of letter group
 	 */
 	int groupNo = *rule;
-	groupNo = groupNo - 'A'; // substracting 'A' makes letter_group equal to number in .Lxx definition
+	groupNo = groupNo - 'A'; // subtracting 'A' makes letter_group equal to number in .Lxx definition
 	if (groupNo < 0)         // fix sign if necessary
 		groupNo += 256;
 	return groupNo;
@@ -2319,9 +2319,9 @@ int TranslateRules(Translator *tr, char *p_start, char *phonemes, int ph_size, c
 
 						// is it a bracket ?
 						if (letter == 0xe000+'(') {
-							if (pre_pause < tr->langopts.param2[LOPT_BRACKET_PAUSE])
-								pre_pause = tr->langopts.param2[LOPT_BRACKET_PAUSE]; // a bracket, aleady spoken by AnnouncePunctuation()
-						}
+							if (pre_pause < tr->langopts.param[LOPT_BRACKET_PAUSE_ANNOUNCED])
+								pre_pause = tr->langopts.param[LOPT_BRACKET_PAUSE_ANNOUNCED]; // a bracket, already spoken by AnnouncePunctuation()
+						} 
 						if (IsBracket(letter)) {
 							if (pre_pause < tr->langopts.param[LOPT_BRACKET_PAUSE])
 								pre_pause = tr->langopts.param[LOPT_BRACKET_PAUSE];
@@ -3028,7 +3028,7 @@ int RemoveEnding(Translator *tr, char *word, int end_type, char *word_copy)
 	int len;
 	char ending[50] = {0};
 
-	// these lists are language specific, but are only relevent if the 'e' suffix flag is used
+	// these lists are language specific, but are only relevant if the 'e' suffix flag is used
 	static const char *add_e_exceptions[] = {
 		"ion", NULL
 	};

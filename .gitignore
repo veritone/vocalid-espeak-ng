@@ -109,10 +109,16 @@ tests/*.check
 !tests/language-replace.test
 !tests/ssml.test
 !tests/translate.test
+!tests/variants.test
 !tests/non-executable-files-with-executable-bit.test
 !tests/bom.test
 !tests/klatt.test
 !tests/mbrola.test
+!tests/dictionary.test
+!tests/cmd_options.test
+!tests/windows-data.test
+!tests/windows-installer.test
+!tests/voices.test
 
 espeak-ng.pc
 

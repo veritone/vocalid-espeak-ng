@@ -32,6 +32,10 @@ AC_ARG_WITH([klatt],
     [AS_HELP_STRING([--with-klatt], [enable the Klatt formant synthesizer @<:@default=yes@:>@])],
     [])
 
+AC_ARG_WITH([speechplayer],
+    [AS_HELP_STRING([--with-speechplayer], [enable the speechPlayer Klatt implementation @<:@default=yes@:>@])],
+    [])
+
 AC_ARG_WITH([mbrola],
     [AS_HELP_STRING([--with-mbrola], [enable the MBROLA speech synthesizer @<:@default=yes@:>@])],
     [])
@@ -48,12 +52,12 @@ AC_ARG_WITH([extdict-ru],
     [AS_HELP_STRING([--with-extdict-ru], [use the extended Russian Dictionary file @<:@default=no@:>@])],
     [])
 
-AC_ARG_WITH([extdict-zh],
-    [AS_HELP_STRING([--with-extdict-zh], [use the extended Mandarin Chinese Dictionary file @<:@default=no@:>@])],
+AC_ARG_WITH([extdict-cmn],
+    [AS_HELP_STRING([--with-extdict-cmn], [use the extended Mandarin Chinese Dictionary file @<:@default=no@:>@])],
     [])
 
-AC_ARG_WITH([extdict-zhy],
-    [AS_HELP_STRING([--with-extdict-zhy], [use the extended Cantonese Chinese Dictionary file @<:@default=no@:>@])],
+AC_ARG_WITH([extdict-yue],
+    [AS_HELP_STRING([--with-extdict-yue], [use the extended Cantonese Chinese Dictionary file @<:@default=no@:>@])],
     [])
 
 AC_ARG_WITH([libfuzzer],
@@ -65,6 +69,7 @@ dnl Program checks.
 dnl ================================================================
 
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
@@ -221,6 +226,12 @@ else
 	have_klatt=yes
 fi
 
+if test "$with_speechplayer" = "no" ; then
+	have_speechplayer=no
+else
+	have_speechplayer=yes
+fi
+
 if test "$with_mbrola" = "no" ; then
 	have_mbrola=no
 else
@@ -246,6 +257,7 @@ else
 fi
 
 AM_CONDITIONAL(OPT_KLATT,  [test x"$have_klatt"  = xyes])
+AM_CONDITIONAL(OPT_SPEECHPLAYER,  [test x"$have_speechplayer"  = xyes])
 AM_CONDITIONAL(OPT_MBROLA, [test x"$have_mbrola" = xyes])
 AM_CONDITIONAL(OPT_ASYNC,  [test x"$have_async"  = xyes])
 
@@ -269,21 +281,21 @@ else
 	have_extdict_ru=no
 fi
 
-if test "$with_extdict_zh" = "yes" ; then
-	have_extdict_zh=yes
+if test "$with_extdict_cmn" = "yes" ; then
+	have_extdict_cmn=yes
 else
-	have_extdict_zh=no
+	have_extdict_cmn=no
 fi
 
-if test "$with_extdict_zhy" = "yes" ; then
-	have_extdict_zhy=yes
+if test "$with_extdict_yue" = "yes" ; then
+	have_extdict_yue=yes
 else
-	have_extdict_zhy=no
+	have_extdict_yue=no
 fi
 
 AM_CONDITIONAL(HAVE_RU_EXTENDED_DICTIONARY,  [test x"$have_extdict_ru"  = xyes])
-AM_CONDITIONAL(HAVE_ZH_EXTENDED_DICTIONARY,  [test x"$have_extdict_zh"  = xyes])
-AM_CONDITIONAL(HAVE_ZHY_EXTENDED_DICTIONARY, [test x"$have_extdict_zhy" = xyes])
+AM_CONDITIONAL(HAVE_CMN_EXTENDED_DICTIONARY,  [test x"$have_extdict_cmn"  = xyes])
+AM_CONDITIONAL(HAVE_YUE_EXTENDED_DICTIONARY, [test x"$have_extdict_yue" = xyes])
 
 dnl ================================================================
 dnl Compiler warnings.
@@ -341,11 +353,12 @@ AC_MSG_NOTICE([
         ndk-build (Android):           ${NDKBUILD_CHECK}
 
         Klatt:                         ${have_klatt}
+        speechPlayer:                  ${have_speechplayer}
         MBROLA:                        ${have_mbrola}
         Async:                         ${have_async}
 
         Extended Dictionaries:
             Russian:                   ${have_extdict_ru}
-            Chinese (Mandarin):        ${have_extdict_zh}
-            Chinese (Cantonese):       ${have_extdict_zhy}
+            Chinese (Mandarin):        ${have_extdict_cmn}
+            Chinese (Cantonese):       ${have_extdict_yue}
 ])

@@ -205,7 +205,6 @@ typedef struct {
 	unsigned char env;    // pitch envelope number
 	unsigned char type;
 	unsigned char prepause;
-	unsigned char postpause;
 	unsigned char amp;
 	unsigned char newword;   // bit flags, see PHLIST_(START|END)_OF_*
 	unsigned char pitch1;
@@ -266,7 +265,7 @@ typedef struct {
 #define INSTN_RETURN         0x0001
 #define INSTN_CONTINUE       0x0002
 
-// Group 0 instrcutions with 8 bit operand.  These values go into bits 8-15 of the instruction
+// Group 0 instructions with 8 bit operand.  These values go into bits 8-15 of the instruction
 #define i_CHANGE_PHONEME 0x01
 #define i_REPLACE_NEXT_PHONEME 0x02
 #define i_INSERT_PHONEME 0x03
@@ -336,13 +335,6 @@ typedef struct {
 #define i_StressLevel  0x800
 
 typedef struct {
-	int name;
-	int length;
-	char *data;
-	char *filename;
-} SOUND_ICON;
-
-typedef struct {
 	int pause_factor;
 	int clause_pause_factor;
 	unsigned int min_pause;
@@ -350,8 +342,7 @@ typedef struct {
 	int lenmod_factor;
 	int lenmod2_factor;
 	int min_sample_len;
-	int loud_consonants;
-	int fast_settings[8];
+	int fast_settings;	// TODO: rename this variable to better explain the purpose, or delete if there is none
 } SPEED_FACTORS;
 
 typedef struct {
@@ -447,9 +438,6 @@ extern unsigned char *wavefile_data;
 extern int samplerate;
 extern int samplerate_native;
 
-extern int wavefile_ix;
-extern int wavefile_amp;
-
 #define N_ECHO_BUF 5500   // max of 250mS at 22050 Hz
 extern int echo_head;
 extern int echo_tail;
@@ -483,11 +471,6 @@ extern unsigned char *out_end;
 extern espeak_EVENT *event_list;
 extern t_espeak_callback *synth_callback;
 extern const int version_phdata;
-
-#define N_SOUNDICON_TAB  80   // total entries in soundicon_tab
-#define N_SOUNDICON_SLOTS 4    // number of slots reserved for dynamic loading of audio files
-extern int n_soundicon_tab;
-extern SOUND_ICON soundicon_tab[N_SOUNDICON_TAB];
 
 void DoEmbedded(int *embix, int sourceix);
 void DoMarker(int type, int char_posn, int length, int value);

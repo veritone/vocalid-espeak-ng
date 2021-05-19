@@ -41,8 +41,9 @@
 
 #include "ssml.h"
 #include "dictionary.h"           // for strncpy0
+#include "mnemonics.h"               // for LookupMnemName, MNEM_TAB, 
 #include "readclause.h"           // for PARAM_STACK, param_stack, AddNameData
-#include "speech.h"               // for MNEM_TAB, LookupMnem
+#include "soundicon.h"               // for LoadSoundFile2
 #include "synthesize.h"           // for SPEED_FACTORS, speed
 #include "translate.h"            // for CTRL_EMBEDDED, IsDigit09, utf8_out
 #include "voice.h"                // for SelectVoice, SelectVoiceByName
@@ -312,7 +313,7 @@ static int GetVoiceAttributes(wchar_t *pw, int tag_type, SSML_STACK *ssml_sp, SS
 	// a voice change.
 	// If it's a closing tag, delete the top frame of the stack and determine whether this implies
 	// a voice change.
-	// Returns  CLAUSE_TYPE_VOICE_CHANGE if there is a voice change
+	// if there is a voice change, sets current_voice_id and returns CLAUSE_TYPE_VOICE_CHANGE
 
 	wchar_t *lang;
 	wchar_t *gender;

@@ -38,6 +38,7 @@
 #include "mbrola.h"               // for MbrolaGenerate, mbrola_name
 #include "phoneme.h"              // for PHONEME_TAB, phVOWEL, phLIQUID, phN...
 #include "setlengths.h"           // for CalcLengths
+#include "soundicon.h"               // for soundicon_tab, n_soundicon
 #include "synthdata.h"            // for InterpretPhoneme, GetEnvelope, Inte...
 #include "translate.h"            // for translator, LANGUAGE_OPTIONS, Trans...
 #include "voice.h"                // for voice_t, voice, LoadVoiceVariant
@@ -65,9 +66,6 @@ static int syllable_end;
 static int syllable_centre;
 
 static voice_t *new_voice = NULL;
-
-int n_soundicon_tab = N_SOUNDICON_SLOTS;
-SOUND_ICON soundicon_tab[N_SOUNDICON_TAB];
 
 #define RMS_GLOTTAL1 35   // vowel before glottal stop
 #define RMS_START 28  // 28
@@ -104,7 +102,7 @@ static void EndAmplitude(void)
 
 static void EndPitch(int voice_break)
 {
-	// posssible end of pitch envelope, fill in the length
+	// possible end of pitch envelope, fill in the length
 	if ((pitch_length > 0) && (last_pitch_cmd >= 0)) {
 		if (wcmdq[last_pitch_cmd][1] == 0)
 			wcmdq[last_pitch_cmd][1] = pitch_length;
@@ -902,14 +900,7 @@ int DoSpect2(PHONEME_TAB *this_ph, int which, FMT_PARAMS *fmt_params,  PHONEME_L
 	if (voice->klattv[0])
 		wcmd_spect = WCMD_KLATT;
 
-	wavefile_ix = fmt_params->wav_addr;
-
-	if (fmt_params->wav_amp == 0)
-		wavefile_amp = 32;
-	else
-		wavefile_amp = (fmt_params->wav_amp * 32)/100;
-
-	if (wavefile_ix == 0) {
+	if (fmt_params->wav_addr == 0) {
 		if (wave_flag) {
 			// cancel any wavefile that was playing previously
 			wcmd_spect = WCMD_SPECT2;
@@ -976,9 +967,15 @@ int DoSpect2(PHONEME_TAB *this_ph, int which, FMT_PARAMS *fmt_params,  PHONEME_L
 		if ((fmt_params->wav_addr != 0) && ((frame1->frflags & FRFLAG_DEFER_WAV) == 0)) {
 			// there is a wave file to play along with this synthesis
 			seq_len_adjust = 0;
+	
+			int wavefile_amp;
+			if (fmt_params->wav_amp == 0)
+				wavefile_amp = 32;
+			else
+				wavefile_amp = (fmt_params->wav_amp * 32)/100;
+
 			DoSample2(fmt_params->wav_addr, which+0x100, 0, fmt_params->fmt_control, 0, wavefile_amp);
 			wave_flag = 1;
-			wavefile_ix = 0;
 			fmt_params->wav_addr = 0;
 		}
 
@@ -1537,7 +1534,6 @@ int Generate(PHONEME_LIST *phoneme_list, int *n_ph, bool resume)
 	return 0; // finished the phoneme list
 }
 
-static int current_phoneme_table;
 int SpeakNextClause(int control)
 {
 	// Speak text from memory (text_in)
@@ -1564,9 +1560,6 @@ int SpeakNextClause(int control)
 		skipping_text = false;
 		return 0;
 	}
-
-	if (current_phoneme_table != voice->phoneme_tab_ix)
-		current_phoneme_table = SelectPhonemeTable(voice->phoneme_tab_ix);
 
 	// read the next clause from the input text file, translate it, and generate
 	// entries in the wavegen command queue
