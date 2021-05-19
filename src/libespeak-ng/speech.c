@@ -637,6 +637,43 @@ void sync_espeak_SetPunctuationList(const wchar_t *punctlist)
 
 #pragma GCC visibility push(default)
 
+int vocalid_PhonemeCallback(const char* ph) {
+	printf("cb %s\n", ph);
+}
+
+ESPEAK_NG_API const char*
+vocalid_TextToIPA(const char* in_text, const char* language) {
+	int phonememode = 0;
+	int separator = (int)'|';
+	int synth_flags = espeakCHARS_AUTO | espeakPHONEMES | espeakENDPAUSE;
+	static bool init = false;
+	espeak_ng_ERROR_CONTEXT context = NULL;
+
+	if (!init) {
+		printf("Call init\n");
+		espeak_ng_STATUS result = espeak_ng_Initialize(&context);
+		printf("Result: %d\n", result);
+		if (result != ENS_OK) {
+			espeak_ng_ClearErrorContext(&context);
+			return NULL;
+		}
+		init = true;
+	}
+
+	phonememode |= espeakPHONEMES_IPA;
+	phonememode |= espeakPHONEMES_SHOW;
+	espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
+	espeak_SetPhonemeTrace(phonememode | (separator << 8), stdout);
+	espeak_ng_SetVoiceByName(language);
+	//const char* ret = espeak_TextToPhonemes(&in_text, espeakCHARS_UTF8, phonememode);
+	int size = strlen(in_text);
+	//espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
+	printf("synth\n");
+	espeak_Synth(in_text, size+1, 0, POS_CHARACTER, 0, synth_flags, NULL, NULL);
+
+	return "";
+}
+
 ESPEAK_API void espeak_SetSynthCallback(t_espeak_callback *SynthCallback)
 {
 	synth_callback = SynthCallback;
@@ -960,3 +997,4 @@ ESPEAK_API const char *espeak_Info(const char **ptr)
 }
 
 #pragma GCC visibility pop
+

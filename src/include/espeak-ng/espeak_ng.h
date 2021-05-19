@@ -203,6 +203,10 @@ ESPEAK_NG_API espeak_ng_STATUS
 espeak_ng_SetConstF0(int f0);
 
 
+/* VocaliD addons */
+ESPEAK_NG_API const char*
+vocalid_TextToIPA(const char* in_text, const char* language);
+
 #ifdef __cplusplus
 }
 #endif
