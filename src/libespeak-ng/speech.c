@@ -643,6 +643,8 @@ int vocalid_PhonemeCallback(const char* ph) {
 	printf("cb %s\n", ph);
 }
 
+extern unsigned int last_sourceix;
+
 ESPEAK_NG_API const char*
 vocalid_TextToIPA(const char* in_text, const char* language) {
 	int phonememode = 0;
@@ -652,9 +654,7 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	espeak_ng_ERROR_CONTEXT context = NULL;
 
 	if (!init) {
-		printf("Call init\n");
 		espeak_ng_STATUS result = espeak_ng_Initialize(&context);
-		printf("Result: %d\n", result);
 		if (result != ENS_OK) {
 			espeak_ng_ClearErrorContext(&context);
 			return NULL;
@@ -669,8 +669,8 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	espeak_ng_SetVoiceByName(language);
 	//const char* ret = espeak_TextToPhonemes(&in_text, espeakCHARS_UTF8, phonememode);
 	int size = strlen(in_text);
-	//espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
-	printf("synth\n");
+	espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
+	last_sourceix = 0;
 	espeak_Synth(in_text, size+1, 0, POS_CHARACTER, 0, synth_flags, NULL, NULL);
 
 	return "";

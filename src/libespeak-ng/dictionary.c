@@ -527,6 +527,7 @@ char *WritePhMnemonic(char *phon_out, PHONEME_TAB *ph, PHONEME_LIST *plist, int 
 	return phon_out;
 }
 
+unsigned int last_sourceix = 0;
 const char *GetTranslatedPhonemeString(int phoneme_mode)
 {
 	/* Called after a clause has been translated into phonemes, in order
@@ -556,9 +557,6 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 	PHONEME_LIST *plist;
 
 	static const char *stress_chars = "==,,''";
-   //mtoman (vocalid) continue ix over clauses
-   //TODO: reset on new call
-   static unsigned int last_sourceix = 0;
 
 	if (phon_out_buf == NULL) {
 		phon_out_size = N_PHON_OUT;
