@@ -304,14 +304,15 @@ static void PrintVersion()
 
 int main(int argc, char **argv)
 {
+	/* TODO: remove, temporary test for memory leaks */
 	if(argc > 1 && !strcmp(argv[1], "bla")) {
-	espeak_ng_InitializePath("/home/mtoman/espeak-ng/");
-	for (int i = 0; i < 100000; ++i) {
-		for (int j = 0; i < 1000000; ++i) {
-			vocalid_TextToIPA("This is a test", "en-us");
+		espeak_ng_InitializePath("/home/mtoman/espeak-ng/");
+		for (int i = 0; i < 100000; ++i) {
+			for (int j = 0; i < 1000000; ++i) {
+				vocalid_TextToIPA("This is a test", "en-us");
+			}
 		}
-	}
-	return 0;
+		return 0;
 	}
 
 
