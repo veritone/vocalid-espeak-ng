@@ -659,17 +659,18 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 			espeak_ng_ClearErrorContext(&context);
 			return NULL;
 		}
+
+		phonememode |= espeakPHONEMES_IPA;
+		phonememode |= espeakPHONEMES_SHOW;
+		//espeak_SetPhonemeTrace(phonememode | (separator << 8), stdout);
+		espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
+		espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
+		espeak_ng_SetVoiceByName(language);
 		init = true;
 	}
 
-	phonememode |= espeakPHONEMES_IPA;
-	phonememode |= espeakPHONEMES_SHOW;
-	espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
-	espeak_SetPhonemeTrace(phonememode | (separator << 8), stdout);
-	espeak_ng_SetVoiceByName(language);
 	//const char* ret = espeak_TextToPhonemes(&in_text, espeakCHARS_UTF8, phonememode);
 	int size = strlen(in_text);
-	espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
 	last_sourceix = 0;
 	espeak_Synth(in_text, size+1, 0, POS_CHARACTER, 0, synth_flags, NULL, NULL);
 
