@@ -639,10 +639,6 @@ void sync_espeak_SetPunctuationList(const wchar_t *punctlist)
 
 #pragma GCC visibility push(default)
 
-int vocalid_PhonemeCallback(const char* ph) {
-	printf("cb %s\n", ph);
-}
-
 extern unsigned int last_sourceix;
 
 ESPEAK_NG_API const char*
@@ -651,6 +647,14 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	int separator = (int)'|';
 	int synth_flags = espeakCHARS_AUTO | espeakPHONEMES | espeakENDPAUSE;
 	static bool init = false;
+	int size = strlen(in_text);
+	char* textptr = in_text;
+	static char* cached_language[10];
+	const unsigned int OUT_BUF_INC = 500;  // realloc increment
+	static char* out_buf = NULL;
+	static unsigned int out_size = 0;
+	int out_ix = 0;
+	unsigned int ret_len = 0;
 	espeak_ng_ERROR_CONTEXT context = NULL;
 
 	if (!init) {
@@ -660,21 +664,47 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 			return NULL;
 		}
 
-		phonememode |= espeakPHONEMES_IPA;
-		phonememode |= espeakPHONEMES_SHOW;
+		out_size = OUT_BUF_INC;
+		if ((out_buf = (char *)malloc(out_size)) == NULL) {
+			fprintf(stderr, "CRITICAL: espeak-ng could not allocate out buffer\n");
+			out_size = 0;
+			return NULL;
+		}
+
 		//espeak_SetPhonemeTrace(phonememode | (separator << 8), stdout);
-		espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
-		espeak_SetPhonemeCallback(vocalid_PhonemeCallback);
-		espeak_ng_SetVoiceByName(language);
+		//espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
 		init = true;
+		espeak_ng_SetVoiceByName(language);
+	}
+	// different language provided, load a new voice
+	else if(strncmp(cached_language, language, 9)) {
+		strncpy(cached_language, language, 9);
+		espeak_ng_SetVoiceByName(language);
 	}
 
-	//const char* ret = espeak_TextToPhonemes(&in_text, espeakCHARS_UTF8, phonememode);
-	int size = strlen(in_text);
+	phonememode |= espeakPHONEMES_IPA;
+	phonememode |= espeakPHONEMES_SHOW;
 	last_sourceix = 0;
-	espeak_Synth(in_text, size+1, 0, POS_CHARACTER, 0, synth_flags, NULL, NULL);
+	while (textptr != NULL) {
+		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_UTF8, phonememode);
+		ret_len = strlen(ret);
 
-	return "";
+		// have to enlarge buffer?
+		if ((out_ix + ret_len + 1) >= out_size) {
+			out_size = out_ix + ret_len + OUT_BUF_INC + 1;
+			char *new_out_buf = (char *)realloc(out_buf, out_size);
+			if (new_out_buf == NULL) {
+				out_size = 0;
+				fprintf(stderr, "CRITICAL: espeak-ng could not re-allocate out buffer\n");
+				return NULL;
+			}
+			out_buf = new_out_buf;
+		}
+		out_buf[out_ix] = '\n';
+		strncpy(out_buf + out_ix + 1, ret, ret_len);
+		out_ix += ret_len;
+	}
+	return out_buf;
 }
 
 ESPEAK_API void espeak_SetSynthCallback(t_espeak_callback *SynthCallback)
