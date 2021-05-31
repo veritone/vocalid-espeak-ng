@@ -644,7 +644,7 @@ extern unsigned int last_sourceix;
 ESPEAK_NG_API const char*
 vocalid_TextToIPA(const char* in_text, const char* language) {
 	int phonememode = 0;
-	int separator = (int)'|';
+	static int separator;
 	int synth_flags = espeakCHARS_AUTO | espeakPHONEMES | espeakENDPAUSE;
 	static bool init = false;
 	int size = strlen(in_text);
@@ -671,6 +671,8 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 			return NULL;
 		}
 
+		utf8_in(&separator, "|");
+
 		//espeak_SetPhonemeTrace(phonememode | (separator << 8), stdout);
 		//espeak_ng_InitializeOutput(ENOUTPUT_MODE_SYNCHRONOUS, 0, NULL);
 		init = true;
@@ -684,14 +686,16 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 
 	phonememode |= espeakPHONEMES_IPA;
 	phonememode |= espeakPHONEMES_SHOW;
+	phonememode |= (separator << 8);
 	last_sourceix = 0;
 	while (textptr != NULL) {
 		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_UTF8, phonememode);
 		ret_len = strlen(ret);
+		printf("RET: %s\n", ret);
 
 		// have to enlarge buffer?
-		if ((out_ix + ret_len + 1) >= out_size) {
-			out_size = out_ix + ret_len + OUT_BUF_INC + 1;
+		if ((out_ix + ret_len + 2) >= out_size) {
+			out_size = out_ix + ret_len + OUT_BUF_INC + 2;
 			char *new_out_buf = (char *)realloc(out_buf, out_size);
 			if (new_out_buf == NULL) {
 				out_size = 0;
@@ -700,9 +704,10 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 			}
 			out_buf = new_out_buf;
 		}
-		out_buf[out_ix] = '\n';
-		strncpy(out_buf + out_ix + 1, ret, ret_len);
-		out_ix += ret_len;
+		strncpy(out_buf + out_ix, ret, ret_len);
+		out_buf[out_ix + ret_len] = '\n';
+		out_buf[out_ix + ret_len + 1] = 0;
+		out_ix += ret_len + 1;
 	}
 	return out_buf;
 }
