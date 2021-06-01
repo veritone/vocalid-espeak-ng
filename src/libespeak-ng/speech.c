@@ -690,12 +690,10 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	phonememode |= espeakPHONEMES_SHOW;
 	phonememode |= (separator << 8);
 	last_sourceix = 0;
-	printf("intext: '%s'", in_text);
-	printf("intext[0]: '%c'", in_text[0]);
+	InitText(0);
 	while (textptr != NULL) {
 		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_AUTO, phonememode);
 		ret_len = strlen(ret);
-		printf("RET %s\n", ret);
 
 		// have to enlarge buffer?
 		if ((out_ix + ret_len + 2) >= out_size) {
