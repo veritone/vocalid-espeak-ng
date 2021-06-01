@@ -649,7 +649,7 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	static bool init = false;
 	int size = strlen(in_text);
 	char* textptr = in_text;
-	static char* cached_language[10];
+	static char cached_language[10];
 	const unsigned int OUT_BUF_INC = 500;  // realloc increment
 	static char* out_buf = NULL;
 	static unsigned int out_size = 0;
@@ -688,10 +688,12 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	phonememode |= espeakPHONEMES_SHOW;
 	phonememode |= (separator << 8);
 	last_sourceix = 0;
+	printf("intext: '%s'", in_text);
+	printf("intext[0]: '%c'", in_text[0]);
 	while (textptr != NULL) {
-		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_UTF8, phonememode);
+		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_AUTO, phonememode);
 		ret_len = strlen(ret);
-		printf("RET: %s\n", ret);
+		printf("RET %s\n", ret);
 
 		// have to enlarge buffer?
 		if ((out_ix + ret_len + 2) >= out_size) {

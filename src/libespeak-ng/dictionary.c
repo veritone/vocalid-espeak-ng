@@ -661,7 +661,7 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 	phon_out_buf[phon_out_ix] = 0;
 
 	plist = &phoneme_list[ix];
-   last_sourceix += plist->sourceix;
+	last_sourceix += (plist->sourceix & 0x7ff);
 	return phon_out_buf;
 }
 
