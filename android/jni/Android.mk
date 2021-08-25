@@ -67,4 +67,5 @@ LOCAL_MODULE := libttsespeak
 LOCAL_MODULE_TAGS := optional
 LOCAL_PRELINK_MODULE := false
 
-include $(BUILD_SHARED_LIBRARY)
+#include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
