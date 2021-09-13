@@ -88,7 +88,7 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/../include;$(ProjectDir)/../pcaudiolib/src/include;$(ProjectDir)/../speechPlayer/include;$(ProjectDir)/../include/compat;$(ProjectDir)/../ucd-tools/src/include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCKAPI_;LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)libespeak-ng.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
@@ -104,7 +104,7 @@
       </PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCKAPI_;LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)libespeak-ng.pdb</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/../include;$(ProjectDir)/../pcaudiolib/src/include;$(ProjectDir)/../speechPlayer/include;$(ProjectDir)/../include/compat;$(ProjectDir)/../ucd-tools/src/include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -124,7 +124,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/../include;$(ProjectDir)/../pcaudiolib/src/include;$(ProjectDir)/../speechPlayer/include;$(ProjectDir)/../include/compat;$(ProjectDir)/../ucd-tools/src/include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCKAPI_;LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)libespeak-ng.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCKAPI_;LIBESPEAK_NG_EXPORT;INCLUDE_KLATT;INCLUDE_SPEECHPLAYER;INCLUDE_MBROLA;HAVE_PCAUDIOLIB_AUDIO_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ProgramDataBaseFileName>$(IntDir)libespeak-ng.pdb</ProgramDataBaseFileName>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)/../include;$(ProjectDir)/../pcaudiolib/src/include;$(ProjectDir)/../speechPlayer/include;$(ProjectDir)/../include/compat;$(ProjectDir)/../ucd-tools/src/include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\libespeak-ng\soundicon.c" />
     <ClCompile Include="..\ucd-tools\src\case.c" />
     <ClCompile Include="..\ucd-tools\src\categories.c" />
     <ClCompile Include="..\ucd-tools\src\ctype.c" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\libespeak-ng\mbrowrap.h" />
     <ClInclude Include="..\libespeak-ng\phoneme.h" />
     <ClInclude Include="..\libespeak-ng\sintab.h" />
+    <ClInclude Include="..\libespeak-ng\soundicon.h" />
     <ClInclude Include="..\libespeak-ng\spect.h" />
     <ClInclude Include="..\libespeak-ng\speech.h" />
     <ClInclude Include="..\libespeak-ng\sPlayer.h" />
