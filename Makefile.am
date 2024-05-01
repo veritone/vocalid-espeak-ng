@@ -463,6 +463,7 @@ dictionaries: \
 	espeak-ng-data/cy_dict \
 	espeak-ng-data/da_dict \
 	espeak-ng-data/de_dict \
+	espeak-ng-data/de_vt_dict \
 	espeak-ng-data/el_dict \
 	espeak-ng-data/en_dict \
 	espeak-ng-data/eo_dict \
@@ -630,6 +631,9 @@ espeak-ng-data/da_dict: dictsource/da_list dictsource/da_rules dictsource/da_ext
 
 de: espeak-ng-data/de_dict
 espeak-ng-data/de_dict: dictsource/de_list dictsource/de_rules dictsource/de_extra dictsource/de_emoji
+
+devt: espeak-ng-data/de_vt_dict
+espeak-ng-data/de_vt_dict: dictsource/de_vt_list dictsource/de_vt_rules dictsource/de_vt_extra dictsource/de_vt_emoji
 
 el: espeak-ng-data/el_dict
 espeak-ng-data/el_dict: dictsource/el_list dictsource/el_rules dictsource/el_extra dictsource/el_emoji

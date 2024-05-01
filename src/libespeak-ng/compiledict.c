@@ -654,8 +654,8 @@ static int compile_line(CompileContext *ctx, char *linebuf, char *dict_line, int
 	length += n_flag_codes;
 
 	if ((multiple_string != NULL) && (multiple_words > 0)) {
-		if (multiple_words > 10) {
-			fprintf(ctx->f_log, "%5d: Two many parts in a multi-word entry: %d\n", ctx->linenum, multiple_words);
+		if (multiple_words > 20) {
+			fprintf(ctx->f_log, "%5d: Too many parts in a multi-word entry: %d\n", ctx->linenum, multiple_words);
 			ctx->error_count++;
 		} else {
 			dict_line[length++] = 80 + multiple_words;
