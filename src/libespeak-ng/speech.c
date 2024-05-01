@@ -641,8 +641,6 @@ void sync_espeak_SetPunctuationList(const wchar_t *punctlist)
 
 #pragma GCC visibility push(default)
 
-extern unsigned int last_sourceix;
-
 ESPEAK_NG_API const char*
 vocalid_TextToIPA(const char* in_text, const char* language) {
 	int phonememode = 0;
@@ -689,7 +687,6 @@ vocalid_TextToIPA(const char* in_text, const char* language) {
 	phonememode |= espeakPHONEMES_IPA;
 	phonememode |= espeakPHONEMES_SHOW;
 	phonememode |= (separator << 8);
-	last_sourceix = 0;
 	InitText(0);
 	while (textptr != NULL) {
 		const char* ret = espeak_TextToPhonemes(&textptr, espeakCHARS_AUTO, phonememode);

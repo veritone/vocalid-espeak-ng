@@ -527,7 +527,6 @@ char *WritePhMnemonic(char *phon_out, PHONEME_TAB *ph, PHONEME_LIST *plist, int 
 	return phon_out;
 }
 
-unsigned int last_sourceix = 0;
 const char *GetTranslatedPhonemeString(int phoneme_mode)
 {
 	/* Called after a clause has been translated into phonemes, in order
@@ -632,11 +631,10 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 			if (plist->tone_ph > 0)
 				buf = WritePhMnemonic(buf, phoneme_tab[plist->tone_ph], plist, use_ipa, NULL);
 		}
-		
+
 		len = buf - phon_buf;
 		if (plist->sourceix) {
-			sprintf(buf, "(%u)", 
-               (plist->sourceix & 0x7ff) + last_sourceix - 1);
+			sprintf(buf, "(%u)", (plist->sourceix & 0x7ff) + clause_start_char - 1);
 			len += strlen(buf);
 		}
 		if ((phon_out_ix + len) >= phon_out_size) {
@@ -660,8 +658,6 @@ const char *GetTranslatedPhonemeString(int phoneme_mode)
 
 	phon_out_buf[phon_out_ix] = 0;
 
-	plist = &phoneme_list[ix];
-	last_sourceix += (plist->sourceix & 0x7ff);
 	return phon_out_buf;
 }
 
