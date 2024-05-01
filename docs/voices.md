@@ -28,6 +28,7 @@
   - [dictrules](#dictrules)
   - [lowercaseSentence](#lowercaseSentence)
   - [replace](#replace)
+  - [spellingStress](#spellingStress)
   - [stressOpt](#stressopt)
   - [stressRule](#stressrule)
   - [stressLength](#stresslength)
@@ -83,7 +84,7 @@ It selects the default behaviour and characteristics for the language,
 and sets default values for "phonemes", "dictionary" and other
 attributes.
 
-If value for `lanuguage` field is `variant`, then file describes only
+If value for `language` field is `variant`, then file describes only
 phonetic features of the voice and it can be used as a [...+variant](../src/espeak-ng.1.ronn)
 option for any language.
 
@@ -417,6 +418,12 @@ e.g.
 
 The phoneme mnemonics can be defined for each language, but some are
 listed in [Phonemes](phonemes.md).
+
+### spellingStress
+
+	spellingStress
+
+When set, stress first letter when reading abbreviations.
 
 ### stressOpt
 

@@ -47,14 +47,14 @@ eSpeak NG is available as:
    welcome.
 *  Written in C.
 
-See the [CHANGELOG](CHANGELOG.md) for a description of the changes in the
+See the [ChangeLog](ChangeLog.md) for a description of the changes in the
 various releases and with the eSpeak NG project.
 
 The following platforms are supported:
 
 | Platform    | Minimum Version | Status |
 |-------------|-----------------|--------|
-| Linux       |                 | ![[Travis continuous integration builds on Linux](https://travis-ci.org/espeak-ng/espeak-ng)](https://secure.travis-ci.org/espeak-ng/espeak-ng.svg?branch=master) |
+| Linux       |                 | ![CI](https://github.com/espeak-ng/espeak-ng/actions/workflows/ci.yml/badge.svg) |
 | BSD         |                 |        |
 | Android     | 4.0             |        |
 | Windows     | Windows 8       |        |
@@ -134,4 +134,4 @@ The `getopt.c` compatibility implementation for getopt support on Windows is
 taken from the NetBSD `getopt_long` implementation, which is licensed under a
 [2-clause BSD](COPYING.BSD2) license.
 
-Android is a trademark of Google Inc.
+Android is a trademark of Google LLC.
