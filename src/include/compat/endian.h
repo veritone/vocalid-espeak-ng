@@ -18,11 +18,12 @@
 
 #ifndef ENDIAN_H_COMPAT_SHIM
 #define ENDIAN_H_COMPAT_SHIM
+#pragma once
 
-#if defined(HAVE_ENDIAN_H)
+#if __has_include_next(<endian.h>)
 #	pragma GCC system_header // Silence "warning: #include_next is a GCC extension"
 #	include_next <endian.h>
-#elif defined(HAVE_SYS_ENDIAN_H)
+#elif __has_include(<sys/endian.h>)
 #	include <sys/endian.h>
 #	if !defined(be16toh)
 #		define be16toh(x) betoh16(x)
@@ -66,7 +67,6 @@
 #	define __PDP_ENDIAN    PDP_ENDIAN
 #elif defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
 #	if BYTE_ORDER == LITTLE_ENDIAN
-#		include <winsock2.h>
 
 #		define htobe16(x) htons(x)
 #		define htole16(x) (x)
